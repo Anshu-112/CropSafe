@@ -23,14 +23,26 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
-const VoicePage: React.FC = () => {
+interface VoicePageProps {
+  language?: 'en' | 'hi';
+  setLanguage?: (l: string) => void;
+}
+
+const VoicePage: React.FC<VoicePageProps> = ({
+  language = 'en',
+  setLanguage: propSetLanguage
+}) => {
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-  const [language, setLanguage] = useState<'en' | 'hi'>('hi');
+  const setLanguage = (l: string) => {
+    if (propSetLanguage) {
+      propSetLanguage(l);
+    }
+  };
   const [cropType, setCropType] = useState<string>('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   
@@ -165,7 +177,7 @@ const VoicePage: React.FC = () => {
 
     // Clean the response text - remove special characters, slashes, and format for speech
     let cleanText = response
-      .replace(/[\/\\\-_*#`~]/g, ' ')  // Replace slashes and special chars with space
+      .replace(/[-/\\_*#`~]/g, ' ')  // Replace slashes and special chars with space
       .replace(/\s+/g, ' ')             // Replace multiple spaces with single space
       .replace(/[^\w\s\u0900-\u097F]/g, '') // Keep only letters, numbers, and Hindi characters
       .trim();

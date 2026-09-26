@@ -15,6 +15,9 @@ env/
 *.h5
 *.keras
 *.pkl
+*.db
+*.sqlite3
+*.sqlite
 
 # Node
 frontend/cropsafe-web/node_modules/

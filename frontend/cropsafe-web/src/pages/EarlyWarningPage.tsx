@@ -14,9 +14,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   FormControl,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
+  Select,
+  MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -32,17 +31,45 @@ import {
   Thermostat as TempIcon,
   Agriculture as CropIcon
 } from '@mui/icons-material';
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
+import CheckIcon from '@mui/icons-material/Check';
 import axios from 'axios';
+import { useFarmer } from '../context/FarmerContext';
+import { saveWeatherAlert } from '../services/api';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
-const EarlyWarningPage: React.FC = () => {
+const supportedCrops = [
+  { id: 'wheat', name: 'Wheat', name_hi: 'गेहूं', icon: '🌾' },
+  { id: 'rice', name: 'Rice', name_hi: 'धान / चावल', icon: '🌾' },
+  { id: 'cotton', name: 'Cotton', name_hi: 'कपास', icon: '🌿' },
+  { id: 'potato', name: 'Potato', name_hi: 'आलू', icon: '🥔' },
+  { id: 'tomato', name: 'Tomato', name_hi: 'टमाटर', icon: '🍅' },
+  { id: 'maize', name: 'Maize', name_hi: 'मक्का', icon: '🌽' },
+  { id: 'sugarcane', name: 'Sugarcane', name_hi: 'गन्ना', icon: '🎋' },
+];
+
+interface EarlyWarningPageProps {
+  language?: 'en' | 'hi';
+  setLanguage?: (l: 'en' | 'hi') => void;
+}
+
+const EarlyWarningPage: React.FC<EarlyWarningPageProps> = ({
+  language = 'en',
+  setLanguage: propSetLanguage
+}) => {
+  const { farmer, isLoggedIn, openLoginModal } = useFarmer();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [warningData, setWarningData] = useState<any>(null);
   const [location, setLocation] = useState<{lat: number, lon: number} | null>(null);
-  const [cropType, setCropType] = useState<'wheat' | 'rice'>('wheat');
-  const [language, setLanguage] = useState<'en' | 'hi'>('hi');
+  const [cropType, setCropType] = useState<string>('wheat');
+  const setLanguage = (l: 'en' | 'hi') => {
+    if (propSetLanguage) {
+      propSetLanguage(l);
+    }
+  };
+  const [savedAlertIndices, setSavedAlertIndices] = useState<Record<number, boolean>>({});
 
   // Get user's location
   useEffect(() => {
@@ -145,34 +172,37 @@ const EarlyWarningPage: React.FC = () => {
       </Box>
 
       {/* Crop Selector */}
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: 'wrap' }}>
-          <CropIcon color="primary" />
-          <FormControl component="fieldset">
-            <RadioGroup
-              row
+      <Paper sx={{ p: 2, mb: 3, borderRadius: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <CropIcon color="primary" />
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              {isHindi ? 'फसल चुनें:' : 'Select Crop:'}
+            </Typography>
+          </Box>
+          <FormControl size="small" sx={{ minWidth: 220 }}>
+            <Select
               value={cropType}
-              onChange={(e) => setCropType(e.target.value as 'wheat' | 'rice')}
+              onChange={(e) => setCropType(e.target.value as string)}
+              sx={{ borderRadius: 2 }}
             >
-              <FormControlLabel
-                value="wheat"
-                control={<Radio />}
-                label={isHindi ? '🌾 गेहूं' : '🌾 Wheat'}
-              />
-              <FormControlLabel
-                value="rice"
-                control={<Radio />}
-                label={isHindi ? '🌾 चावल' : '🌾 Rice'}
-              />
-            </RadioGroup>
+              {supportedCrops.map((c) => (
+                <MenuItem key={c.id} value={c.id}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <span>{c.icon}</span>
+                    <span>{isHindi ? `${c.name_hi} (${c.name})` : `${c.name} (${c.name_hi})`}</span>
+                  </Box>
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <Button
             variant="contained"
             onClick={fetchWarning}
             disabled={loading}
-            sx={{ ml: 'auto' }}
+            sx={{ ml: 'auto', borderRadius: 2 }}
           >
-            {loading ? 'Refreshing...' : (isHindi ? 'ताजा करें' : 'Refresh')}
+            {loading ? (isHindi ? 'लोड हो रहा है...' : 'Refreshing...') : (isHindi ? 'ताजा करें' : 'Refresh')}
           </Button>
         </Box>
       </Paper>
@@ -274,6 +304,49 @@ const EarlyWarningPage: React.FC = () => {
                           : 'Take preventive action immediately'
                         }
                       </Alert>
+
+                      {savedAlertIndices[idx] ? (
+                        <Button
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                          fullWidth
+                          sx={{ mt: 1.5 }}
+                          startIcon={<CheckIcon />}
+                          disabled
+                        >
+                          {isHindi ? 'अलर्ट सहेजा गया' : 'Alert Saved'}
+                        </Button>
+                      ) : (
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="warning"
+                          fullWidth
+                          sx={{ mt: 1.5, fontWeight: 'bold' }}
+                          startIcon={<BookmarkAddIcon />}
+                          onClick={async () => {
+                            if (!isLoggedIn) {
+                              openLoginModal();
+                              return;
+                            }
+                            const res = await saveWeatherAlert({
+                              farmer_id: farmer!.id,
+                              crop: cropType,
+                              risk_level: 'HIGH',
+                              primary_disease: alert.disease,
+                              primary_disease_hi: alert.disease_hi,
+                              summary: alert.advisory,
+                              summary_hi: alert.advisory_hi
+                            });
+                            if (res.success) {
+                              setSavedAlertIndices((prev) => ({ ...prev, [idx]: true }));
+                            }
+                          }}
+                        >
+                          {isHindi ? 'यह चेतावनी सहेजें' : 'Save this Alert'}
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}

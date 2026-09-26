@@ -98,6 +98,138 @@ class EarlyWarningSystem:
                         'HIGH': '#F44336'
                     }
                 }
+            },
+            'cotton': {
+                'BacterialBlight': {
+                    'name_hi': 'जीवाणु झुलसा (Blackarm)',
+                    'temp_min': 25, 'temp_max': 35,
+                    'humidity_min': 80,
+                    'rain_days': 2,
+                    'warning_days': 5,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'LeafCurlVirus': {
+                    'name_hi': 'पत्ती मरोड़ रोग (CLCuV)',
+                    'temp_min': 28, 'temp_max': 38,
+                    'humidity_min': 65,
+                    'rain_days': 0,
+                    'warning_days': 4,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'BollRot': {
+                    'name_hi': 'गुल्लर सड़न रोग',
+                    'temp_min': 24, 'temp_max': 32,
+                    'humidity_min': 85,
+                    'rain_days': 3,
+                    'warning_days': 6,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
+            },
+            'potato': {
+                'LateBlight': {
+                    'name_hi': 'पछेती झुलसा (Late Blight)',
+                    'temp_min': 10, 'temp_max': 21,
+                    'humidity_min': 85,
+                    'rain_days': 2,
+                    'warning_days': 4,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'EarlyBlight': {
+                    'name_hi': 'अगेती झुलसा (Early Blight)',
+                    'temp_min': 20, 'temp_max': 30,
+                    'humidity_min': 75,
+                    'rain_days': 1,
+                    'warning_days': 6,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'BlackScurf': {
+                    'name_hi': 'काली रूसी (Black Scurf)',
+                    'temp_min': 15, 'temp_max': 25,
+                    'humidity_min': 80,
+                    'rain_days': 1,
+                    'warning_days': 7,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
+            },
+            'tomato': {
+                'LateBlight': {
+                    'name_hi': 'पछेती झुलसा रोग',
+                    'temp_min': 12, 'temp_max': 22,
+                    'humidity_min': 85,
+                    'rain_days': 2,
+                    'warning_days': 4,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'EarlyBlight': {
+                    'name_hi': 'अगेती झुलसा (Alternaria)',
+                    'temp_min': 22, 'temp_max': 30,
+                    'humidity_min': 75,
+                    'rain_days': 1,
+                    'warning_days': 6,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'BacterialSpot': {
+                    'name_hi': 'जीवाणु धब्बा रोग',
+                    'temp_min': 24, 'temp_max': 32,
+                    'humidity_min': 80,
+                    'rain_days': 1,
+                    'warning_days': 5,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
+            },
+            'maize': {
+                'FallArmyworm': {
+                    'name_hi': 'फॉल आर्मीवर्म कीट प्रकोप',
+                    'temp_min': 20, 'temp_max': 32,
+                    'humidity_min': 60,
+                    'rain_days': 0,
+                    'warning_days': 3,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'TurcicumLeafBlight': {
+                    'name_hi': 'टरसिकम पत्ती झुलसा',
+                    'temp_min': 18, 'temp_max': 27,
+                    'humidity_min': 80,
+                    'rain_days': 2,
+                    'warning_days': 6,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
+            },
+            'sugarcane': {
+                'RedRot': {
+                    'name_hi': 'गन्ने का लाल सड़न (Red Rot)',
+                    'temp_min': 25, 'temp_max': 35,
+                    'humidity_min': 80,
+                    'rain_days': 3,
+                    'warning_days': 7,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'Smut': {
+                    'name_hi': 'काजलिया / कण्डुवा रोग',
+                    'temp_min': 26, 'temp_max': 36,
+                    'humidity_min': 70,
+                    'rain_days': 1,
+                    'warning_days': 6,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
+            },
+            'other': {
+                'FungalBlight': {
+                    'name_hi': 'फफूंद झुलसा व धब्बा रोग',
+                    'temp_min': 20, 'temp_max': 30,
+                    'humidity_min': 80,
+                    'rain_days': 2,
+                    'warning_days': 5,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                },
+                'PestInfestation': {
+                    'name_hi': 'कीट व माहू प्रकोप जोखिम',
+                    'temp_min': 22, 'temp_max': 34,
+                    'humidity_min': 65,
+                    'rain_days': 0,
+                    'warning_days': 4,
+                    'risk_colors': {'LOW': '#4CAF50', 'MEDIUM': '#FFC107', 'HIGH': '#F44336'}
+                }
             }
         }
     
@@ -119,21 +251,28 @@ class EarlyWarningSystem:
         }
         
         try:
-            response = requests.get(url, params=params)
-            response.raise_for_status()
-            return response.json()
+            response = requests.get(url, params=params, timeout=10)
+            if response.status_code == 200:
+                return response.json()
+            return None
         except Exception as e:
             print(f"Weather API error: {e}")
             return None
     
-    def calculate_disease_risk(self, weather_data: Dict, crop_type: str) -> List[Dict]:
-        """Calculate disease risk for next 7 days"""
+    def calculate_disease_risk(self, weather_data: Dict, crop_type: str = 'wheat') -> List[Dict]:
+        """Calculate disease risk based on weather forecast"""
         if not weather_data or 'daily' not in weather_data:
             return []
-        
+            
         daily_data = weather_data['daily']
         risks = []
         
+        # Get crop thresholds safely
+        crop_rules = self.disease_thresholds.get(
+            crop_type.lower() if crop_type else 'wheat',
+            self.disease_thresholds.get('other', self.disease_thresholds['wheat'])
+        )
+
         for day in range(min(7, len(daily_data['time']))):
             date = daily_data['time'][day]
             temp_max = daily_data['temperature_2m_max'][day]
@@ -154,7 +293,7 @@ class EarlyWarningSystem:
             }
             
             # Check each disease for this crop
-            for disease, thresholds in self.disease_thresholds[crop_type].items():
+            for disease, thresholds in crop_rules.items():
                 # Calculate risk score (0-100)
                 risk_score = 0
                 
