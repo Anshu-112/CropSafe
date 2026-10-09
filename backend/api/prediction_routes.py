@@ -12,6 +12,8 @@ from datetime import datetime
 from services.weather_service import EarlyWarningSystem
 
 # Load environment variables
+backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(backend_dir, ".env"))
 load_dotenv()
 
 router = APIRouter(prefix="/api", tags=["prediction"])

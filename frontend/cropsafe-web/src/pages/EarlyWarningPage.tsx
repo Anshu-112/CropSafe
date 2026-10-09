@@ -35,9 +35,7 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import CheckIcon from '@mui/icons-material/Check';
 import axios from 'axios';
 import { useFarmer } from '../context/FarmerContext';
-import { saveWeatherAlert } from '../services/api';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+import { saveWeatherAlert, API_BASE_URL } from '../services/api';
 
 const supportedCrops = [
   { id: 'wheat', name: 'Wheat', name_hi: 'गेहूं', icon: '🌾' },

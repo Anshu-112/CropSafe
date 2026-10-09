@@ -41,9 +41,7 @@ import MapIcon from '@mui/icons-material/Map';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useFarmer } from '../context/FarmerContext';
-import { saveDiagnosisRecord, submitOutbreakReport } from '../services/api';
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+import { saveDiagnosisRecord, submitOutbreakReport, API_BASE_URL } from '../services/api';
 
 // Language options
 const languages = [

@@ -7,6 +7,13 @@ import uvicorn
 from datetime import datetime
 
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env or root .env
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(backend_dir, ".env"))
+load_dotenv()
+
 from database.db import init_db
 
 # Import routes
@@ -24,16 +31,15 @@ app = FastAPI(
     version="2.2.0"
 )
 
-# Configure CORS
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173")
+# Configure CORS - allow all origins by default so live deployed frontends (Vercel, Netlify) can connect
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "*")
 origins = [o.strip() for o in allowed_origins_env.split(",") if o.strip()]
-if "*" in origins:
-    origins = ["*"]
+allow_all = "*" in origins or not origins
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins if origins != ["*"] else ["*"],
-    allow_credentials=True if origins != ["*"] else False,
+    allow_origins=["*"] if allow_all else origins,
+    allow_credentials=False if allow_all else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
